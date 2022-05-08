@@ -18,6 +18,9 @@ dependencies {
 
     implementation 'com.h2database:h2:1.4.194'
     testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = 'UTF-8'
 }
 
 test {
