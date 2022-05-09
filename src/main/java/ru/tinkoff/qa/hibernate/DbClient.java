@@ -37,13 +37,9 @@ public class DbClient {
 
         SessionFactory sessionFactory = HibernateSessionFactoryCreator.createSessionFactory();
         Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            session.persist(workman);
-            session.getTransaction().commit();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        session.beginTransaction();
+        session.persist(workman);
+        session.getTransaction().commit();
         session.close();
     }
 
@@ -57,13 +53,9 @@ public class DbClient {
 
         SessionFactory sessionFactory = HibernateSessionFactoryCreator.createSessionFactory();
         Session session = sessionFactory.openSession();
-        try {
-            session.beginTransaction();
-            session.persist(places);
-            session.getTransaction().commit();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        session.beginTransaction();
+        session.persist(places);
+        session.getTransaction().commit();
         session.close();
     }
 }

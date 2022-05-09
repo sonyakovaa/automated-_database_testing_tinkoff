@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import ru.tinkoff.qa.BeforeCreator;
 import ru.tinkoff.qa.hibernate.models.Animal;
 import ru.tinkoff.qa.hibernate.models.Places;
-import ru.tinkoff.qa.hibernate.models.Workman;
 import ru.tinkoff.qa.hibernate.models.Zoo;
 
 public class ZooHibernateTests {
@@ -44,9 +43,16 @@ public class ZooHibernateTests {
      */
     @Test
     public void insertIndexAnimal() {
-        for (int index = 1; index <= 10; index++) {
-            new DbClient().insertAnimal(index, "Бусинка", 2, 1, 1, 1);
+        boolean flag = false;
+        try {
+            for (int index = 1; index <= 10; index++) {
+                new DbClient().insertAnimal(index, "Бусинка", 2, 1, 1, 1);
+            }
+        } catch (Exception exception) {
+            flag = true;
         }
+
+        Assertions.assertTrue(flag);
     }
 
     /**
@@ -54,7 +60,14 @@ public class ZooHibernateTests {
      */
     @Test
     public void insertNullToWorkman() {
-        new DbClient().insertWorkman(7, null, 23, 1);
+        boolean flag = false;
+        try {
+            new DbClient().insertWorkman(7, null, 23, 1);
+        } catch (Exception exception) {
+            flag = true;
+        }
+
+        Assertions.assertTrue(flag);
     }
 
     /**
