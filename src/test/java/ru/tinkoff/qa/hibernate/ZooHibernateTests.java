@@ -11,6 +11,8 @@ import ru.tinkoff.qa.hibernate.models.Animal;
 import ru.tinkoff.qa.hibernate.models.Places;
 import ru.tinkoff.qa.hibernate.models.Zoo;
 
+import java.util.List;
+
 public class ZooHibernateTests {
 
     SessionFactory sessionFactory;
@@ -89,7 +91,7 @@ public class ZooHibernateTests {
      */
     @Test
     public void countRowZoo() {
-        String[] zoo_name = new String[]{"Центральный", "Северный", "Западный"};
+        String[] zoo_name = {"Центральный", "Северный", "Западный"};
         for (int i = 0; i < 3; i++) {
             String result = session.createNativeQuery("SELECT * from public.zoo WHERE \"name\" LIKE '" + zoo_name[i] + "'",
                             Zoo.class)

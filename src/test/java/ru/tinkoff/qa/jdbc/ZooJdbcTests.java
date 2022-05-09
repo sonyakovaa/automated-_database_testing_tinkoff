@@ -107,17 +107,17 @@ public class ZooJdbcTests {
         try {
             ResultSet resultSet = statement
                     .executeQuery("SELECT * FROM public.zoo");
-
-            String[] zoo_name = new String[] {"Центральный", "Северный", "Западный"};
-            for (int i = 0; i < 3; i++) {
-                resultSet.next();
-                Assertions.assertEquals(zoo_name[i], resultSet.getString(2));
-            }
-
             Assertions.assertEquals(3, resultSet.getInt(1));
+
+            String[] zoo_name = {"Центральный", "Северный", "Западный"};
+            for (int i = 0; i < 3; i++) {
+                ResultSet resultSetZoo = statement
+                        .executeQuery("SELECT * from public.zoo WHERE \"name\" LIKE '" + zoo_name[i] + "'");
+                resultSetZoo.next();
+                Assertions.assertEquals(zoo_name[i], resultSetZoo.getString(2));
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
-
 }
