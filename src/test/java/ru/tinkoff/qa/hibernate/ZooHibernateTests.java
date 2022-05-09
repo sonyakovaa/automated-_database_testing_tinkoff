@@ -1,14 +1,31 @@
 package ru.tinkoff.qa.hibernate;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.tinkoff.qa.BeforeCreator;
+import ru.tinkoff.qa.hibernate.models.Animal;
+import ru.tinkoff.qa.hibernate.models.Places;
+import ru.tinkoff.qa.hibernate.models.Workman;
+import ru.tinkoff.qa.hibernate.models.Zoo;
 
 public class ZooHibernateTests {
+
+    SessionFactory sessionFactory;
+    Session session;
 
     @BeforeAll
     static void init() {
         BeforeCreator.createData();
+    }
+
+    @BeforeEach
+    void getSession() {
+        sessionFactory = HibernateSessionFactoryCreator.createSessionFactory();
+        session = sessionFactory.openSession();
     }
 
     /**
@@ -16,7 +33,10 @@ public class ZooHibernateTests {
      */
     @Test
     public void countRowAnimal() {
-        assert false;
+        int result = session.createNativeQuery("SELECT * FROM public.animal", Animal.class)
+                .getResultList()
+                .size();
+        Assertions.assertEquals(10, result);
     }
 
     /**
@@ -24,7 +44,9 @@ public class ZooHibernateTests {
      */
     @Test
     public void insertIndexAnimal() {
-        assert false;
+        for (int index = 1; index <= 10; index++) {
+            new DbClient().insertAnimal(index, "Бусинка", 2, 1, 1, 1);
+        }
     }
 
     /**
@@ -32,7 +54,7 @@ public class ZooHibernateTests {
      */
     @Test
     public void insertNullToWorkman() {
-        assert false;
+        new DbClient().insertWorkman(7, null, 23, 1);
     }
 
     /**
@@ -40,7 +62,13 @@ public class ZooHibernateTests {
      */
     @Test
     public void insertPlacesCountRow() {
-        assert false;
+        new DbClient().insertPlace(6, 1, 185, "Загон 6");
+
+        int result = session.createNativeQuery("SELECT * FROM public.places", Places.class)
+                .getResultList()
+                .size();
+        Assertions.assertEquals(6, result);
+        session.close();
     }
 
     /**
@@ -48,6 +76,19 @@ public class ZooHibernateTests {
      */
     @Test
     public void countRowZoo() {
-        assert false;
+        String[] zoo_name = new String[]{"Центральный", "Северный", "Западный"};
+        for (int i = 0; i < 3; i++) {
+            String result = session.createNativeQuery("SELECT * from public.zoo WHERE \"name\" LIKE '" + zoo_name[i] + "'",
+                            Zoo.class)
+                    .getResultList()
+                    .get(0)
+                    .getName();
+            Assertions.assertEquals(zoo_name[i], result);
+        }
+
+        int resultRowZoo = session.createNativeQuery("SELECT * FROM public.zoo", Zoo.class)
+                .getResultList()
+                .size();
+        Assertions.assertEquals(3, resultRowZoo);
     }
 }
