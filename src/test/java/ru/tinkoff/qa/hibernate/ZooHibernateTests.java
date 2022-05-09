@@ -11,8 +11,6 @@ import ru.tinkoff.qa.hibernate.models.Animal;
 import ru.tinkoff.qa.hibernate.models.Places;
 import ru.tinkoff.qa.hibernate.models.Zoo;
 
-import java.util.List;
-
 public class ZooHibernateTests {
 
     SessionFactory sessionFactory;
